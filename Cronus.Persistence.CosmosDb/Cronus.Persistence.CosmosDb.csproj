@@ -61,7 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Packages\LibLog.4.2\LibLog.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Config\CosmosEventStoreSettings.cs" />
+    <Compile Include="CosmosDbDocument.cs" />
+    <Compile Include="CosmosEventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
