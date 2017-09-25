@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.Handle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Persistence.CosmosDb", "..\src\Elders.Cronus.Persistence.CosmosDb\Elders.Cronus.Persistence.CosmosDb.csproj", "{805252ED-663C-46D6-904C-905031AF8E70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.IdentityAndAccess.Contracts", "Elders.Cronus.Sample.IdentityAndAccess.Contracts\Elders.Cronus.Sample.IdentityAndAccess.Contracts.csproj", "{EEF328A2-E601-41CA-9DDD-03ED88B398EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.IdentityAndAccess", "Elders.Cronus.Sample.IdentityAndAccess\Elders.Cronus.Sample.IdentityAndAccess.csproj", "{A3BF6A35-5FEC-4E62-984E-541F479878E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{805252ED-663C-46D6-904C-905031AF8E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{805252ED-663C-46D6-904C-905031AF8E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{805252ED-663C-46D6-904C-905031AF8E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF328A2-E601-41CA-9DDD-03ED88B398EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF328A2-E601-41CA-9DDD-03ED88B398EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF328A2-E601-41CA-9DDD-03ED88B398EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF328A2-E601-41CA-9DDD-03ED88B398EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
