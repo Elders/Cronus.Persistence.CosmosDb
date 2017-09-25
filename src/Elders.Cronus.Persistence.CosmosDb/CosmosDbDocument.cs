@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
-namespace cosmos_db_docdb_dotnet_tutorial
+namespace Cronus.Persistence.CosmosDb
 {
-    [DataContract(Name = "6a63389b-b58f-4164-9fe9-9ae75da30067")]
+    [DataContract(Name = "00a7e299-e667-4a53-9728-eaed26765bce")]
     public class CosmosDbDocument
     {
         CosmosDbDocument() { }

@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.ApplicationServices", "Elders.Cronus.Sample.ApplicationServices\Elders.Cronus.Sample.ApplicationServices.csproj", "{0119EF98-3715-4579-B361-84D5E7E474CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.Collaboration", "Elders.Cronus.Sample.Collaboration\Elders.Cronus.Sample.Collaboration.csproj", "{71E7AD4A-00D3-4A25-AE68-67AC6B2FC8DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.Collaboration.Contracts", "Elders.Cronus.Sample.Collaboration.Contracts\Elders.Cronus.Sample.Collaboration.Contracts.csproj", "{0555CD6A-29C8-4FBE-B2B5-B5659D34227B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.Handlers", "Elders.Cronus.Sample.Handlers\Elders.Cronus.Sample.Handlers.csproj", "{C419C0D9-97D5-4604-8FB2-EADD92907ECE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Persistence.CosmosDb", "..\src\Elders.Cronus.Persistence.CosmosDb\Elders.Cronus.Persistence.CosmosDb.csproj", "{805252ED-663C-46D6-904C-905031AF8E70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0119EF98-3715-4579-B361-84D5E7E474CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0119EF98-3715-4579-B361-84D5E7E474CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0119EF98-3715-4579-B361-84D5E7E474CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0119EF98-3715-4579-B361-84D5E7E474CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71E7AD4A-00D3-4A25-AE68-67AC6B2FC8DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71E7AD4A-00D3-4A25-AE68-67AC6B2FC8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71E7AD4A-00D3-4A25-AE68-67AC6B2FC8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71E7AD4A-00D3-4A25-AE68-67AC6B2FC8DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0555CD6A-29C8-4FBE-B2B5-B5659D34227B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0555CD6A-29C8-4FBE-B2B5-B5659D34227B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0555CD6A-29C8-4FBE-B2B5-B5659D34227B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0555CD6A-29C8-4FBE-B2B5-B5659D34227B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C419C0D9-97D5-4604-8FB2-EADD92907ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C419C0D9-97D5-4604-8FB2-EADD92907ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C419C0D9-97D5-4604-8FB2-EADD92907ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C419C0D9-97D5-4604-8FB2-EADD92907ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805252ED-663C-46D6-904C-905031AF8E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805252ED-663C-46D6-904C-905031AF8E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805252ED-663C-46D6-904C-905031AF8E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805252ED-663C-46D6-904C-905031AF8E70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F75732B5-BCF8-4A30-AE1B-97E2082B2211}
+	EndGlobalSection
+EndGlobal
