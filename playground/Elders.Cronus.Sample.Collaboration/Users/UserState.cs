@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Elders.Cronus.Sample.Collaboration.Users
 {
     [DataContract(Name = "cb49e049-380a-4361-a1aa-dcbff9959b40")]
-    class UserState : AggregateRootState<User, UserId>
+    public class UserState : AggregateRootState<User, UserId>
     {
         public UserState() { }
 

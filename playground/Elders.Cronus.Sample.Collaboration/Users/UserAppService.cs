@@ -3,7 +3,7 @@ using Elders.Cronus.Sample.Collaboration.Contracts.Users.Commands;
 
 namespace Elders.Cronus.Sample.Collaboration.Users
 {
-    class UserAppService : AggregateRootApplicationService<User>,
+    public class UserAppService : AggregateRootApplicationService<User>,
         ICommandHandler<CreateUser>,
         ICommandHandler<RenameUser>
     {

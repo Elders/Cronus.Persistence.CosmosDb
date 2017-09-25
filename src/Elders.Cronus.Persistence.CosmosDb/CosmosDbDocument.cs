@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Elders.Cronus.EventStore;
+using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 namespace Cronus.Persistence.CosmosDb
 {
@@ -17,7 +19,7 @@ namespace Cronus.Persistence.CosmosDb
         [DataMember(Order = 1), JsonProperty("i")]
         public string I { get; private set; }
 
-        [DataMember(Order = 2)]
+        [DataMember(Order = 2), JsonProperty("d")]
         public byte[] D { get; private set; }
     }
 }

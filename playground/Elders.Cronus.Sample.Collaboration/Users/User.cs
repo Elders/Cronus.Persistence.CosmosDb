@@ -5,7 +5,7 @@ using System;
 
 namespace Elders.Cronus.Sample.Collaboration.Users
 {
-    class User : AggregateRoot<UserState>
+    public class User : AggregateRoot<UserState>
     {
         User() { }
 

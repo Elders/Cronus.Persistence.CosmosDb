@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.Identi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.IdentityAndAccess", "Elders.Cronus.Sample.IdentityAndAccess\Elders.Cronus.Sample.IdentityAndAccess.csproj", "{A3BF6A35-5FEC-4E62-984E-541F479878E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elders.Cronus.Sample.UI", "Elders.Cronus.Sample.UI\Elders.Cronus.Sample.UI.csproj", "{9B69931A-C818-4D46-9640-C9C1249D8B3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3BF6A35-5FEC-4E62-984E-541F479878E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B69931A-C818-4D46-9640-C9C1249D8B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B69931A-C818-4D46-9640-C9C1249D8B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B69931A-C818-4D46-9640-C9C1249D8B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B69931A-C818-4D46-9640-C9C1249D8B3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

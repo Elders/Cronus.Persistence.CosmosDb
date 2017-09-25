@@ -28,14 +28,14 @@ namespace Cronus.Persistence.CosmosDb
         public EventStream Load(IAggregateRootId aggregateId)
         {
             string id = Convert.ToBase64String(aggregateId.RawId);
-            List<CosmosDbDocument> queryResult = client.CreateDocumentQuery<CosmosDbDocument>(queryUri).Where(x => x.I == id).ToList();
+            IEnumerable<CosmosDbDocument> queryResult = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, new FeedOptions() { MaxItemCount = 100 }).Where(x => x.I == id); // server is down here 
             List<AggregateCommit> aggregateCommits = new List<AggregateCommit>();
             foreach (var cosmosDocument in queryResult)
             {
                 var data = cosmosDocument.D;
                 using (var dataStream = new MemoryStream(data))
                 {
-                    aggregateCommits.Add((AggregateCommit)serializer.Deserialize(dataStream));
+                    aggregateCommits.Add((AggregateCommit)serializer.Deserialize(dataStream)); // are  you sure this works?
                 }
             }
             return new EventStream(aggregateCommits);
