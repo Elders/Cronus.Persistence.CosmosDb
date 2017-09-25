@@ -49,5 +49,19 @@
   <ItemGroup>
     <Folder Include="Users\Projections\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Elders.Cronus.Sample.Collaboration.Contracts\Elders.Cronus.Sample.Collaboration.Contracts.csproj">
+      <Project>{0555CD6A-29C8-4FBE-B2B5-B5659D34227B}</Project>
+      <Name>Elders.Cronus.Sample.Collaboration.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Elders.Cronus.Sample.IdentityAndAccess.Contracts\Elders.Cronus.Sample.IdentityAndAccess.Contracts.csproj">
+      <Project>{EEF328A2-E601-41CA-9DDD-03ED88B398EA}</Project>
+      <Name>Elders.Cronus.Sample.IdentityAndAccess.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Elders.Cronus.Sample.IdentityAndAccess\Elders.Cronus.Sample.IdentityAndAccess.csproj">
+      <Project>{A3BF6A35-5FEC-4E62-984E-541F479878E2}</Project>
+      <Name>Elders.Cronus.Sample.IdentityAndAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

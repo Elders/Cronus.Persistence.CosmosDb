@@ -1,7 +1,7 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
 
-namespace Elders.Cronus.Sample.IdentityAndAccess.Accounts.Commands
+namespace Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Commands
 {
     [DataContract(Name = "7ffbfeca-4bb5-4e52-8dfe-81fff4b0c5a4")]
     public class RegisterAccount : ICommand

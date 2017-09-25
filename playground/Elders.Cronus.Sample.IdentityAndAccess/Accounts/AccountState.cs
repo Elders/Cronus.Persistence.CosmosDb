@@ -1,9 +1,10 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Sample.IdentityAndAccess.Accounts;
-using Elders.Cronus.Sample.IdentityAndAccess.Accounts.Events;
+using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts;
+using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Events;
 using System.Runtime.Serialization;
 
-namespace Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts
+namespace Elders.Cronus.Sample.IdentityAndAccess.Accounts
 {
     [DataContract(Name = "1aa61678-3fca-4ce6-948b-e965f6936b36")]
     public class AccountState : AggregateRootState<Account, AccountId>

@@ -40,16 +40,19 @@
     <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounts\AccountId.cs" />
-    <Compile Include="Accounts\Commands\ChangeAccountEmail.cs" />
-    <Compile Include="Accounts\Commands\RegisterAccount.cs" />
-    <Compile Include="Accounts\Events\AccountEmailChanged.cs" />
-    <Compile Include="Accounts\Events\AccountRegistered.cs" />
+    <Compile Include="Accounts\Account.cs" />
+    <Compile Include="Accounts\AccountAppService.cs" />
+    <Compile Include="Accounts\AccountState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Elders.Cronus.Sample.IdentityAndAccess.Contracts\Elders.Cronus.Sample.IdentityAndAccess.Contracts.csproj">
+      <Project>{EEF328A2-E601-41CA-9DDD-03ED88B398EA}</Project>
+      <Name>Elders.Cronus.Sample.IdentityAndAccess.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

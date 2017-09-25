@@ -1,7 +1,7 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
 
-namespace Elders.Cronus.Sample.IdentityAndAccess.Accounts.Events
+namespace Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Events
 {
     [DataContract(Name = "8b6304b7-e28b-4678-aa78-87d080d05adb")]
     public class AccountEmailChanged : IEvent

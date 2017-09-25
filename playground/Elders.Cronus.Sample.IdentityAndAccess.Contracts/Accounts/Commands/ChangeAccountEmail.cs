@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus.DomainModeling;
 using System.Runtime.Serialization;
+using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts;
 
 namespace Elders.Cronus.Sample.IdentityAndAccess.Accounts.Commands
 {

@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Elders.Cronus.Sample.IdentityAndAccess.Accounts
+namespace Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts
 {
     [DataContract(Name = "7aecdfe6-ccbc-4ce2-add6-f98ee1a552a0")]
     public class AccountId : GuidId

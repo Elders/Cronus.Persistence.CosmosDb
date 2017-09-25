@@ -1,7 +1,8 @@
 ﻿using Elders.Cronus.DomainModeling;
 using Elders.Cronus.Sample.IdentityAndAccess.Accounts.Commands;
+using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Commands;
 
-namespace Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts
+namespace Elders.Cronus.Sample.IdentityAndAccess.Accounts
 {
     public class AccountAppService : AggregateRootApplicationService<Account>,
         ICommandHandler<RegisterAccount>,
