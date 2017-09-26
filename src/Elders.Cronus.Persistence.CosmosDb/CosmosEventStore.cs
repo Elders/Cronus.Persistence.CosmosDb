@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Elders.Cronus.Serializer;
 using System.IO;
+using Microsoft.Azure.Documents.Linq;
+using System.Threading.Tasks;
 
 namespace Cronus.Persistence.CosmosDb
 {
@@ -27,17 +29,36 @@ namespace Cronus.Persistence.CosmosDb
 
         public EventStream Load(IAggregateRootId aggregateId)
         {
-            string id = Convert.ToBase64String(aggregateId.RawId);
-            IEnumerable<CosmosDbDocument> queryResult = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, new FeedOptions() { MaxItemCount = 100 }).Where(x => x.I == id); // server is down here 
             List<AggregateCommit> aggregateCommits = new List<AggregateCommit>();
-            foreach (var cosmosDocument in queryResult)
+            int stupidityFactor = 0;
+            bool hasMoreRecords = true;
+            string id = Convert.ToBase64String(aggregateId.RawId);
+            var options = new FeedOptions { MaxItemCount = 100 };
+
+            while (hasMoreRecords)
             {
-                var data = cosmosDocument.D;
-                using (var dataStream = new MemoryStream(data))
+                IDocumentQuery<CosmosDbDocument> query = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, options).Where(x => x.I == id).AsDocumentQuery();
+                FeedResponse<Document> result = query.ExecuteNextAsync<Document>().Result;
+
+                foreach (var cosmosDocument in result)
                 {
-                    aggregateCommits.Add((AggregateCommit)serializer.Deserialize(dataStream)); // are  you sure this works?
+                    byte[] data = ((CosmosDbDocument)((dynamic)cosmosDocument)).D;
+                    using (var dataStream = new MemoryStream(data))
+                    {
+                        aggregateCommits.Add((AggregateCommit)serializer.Deserialize(dataStream));
+                    }
                 }
-            }
+
+                if (!query.HasMoreResults) hasMoreRecords = false;
+
+                if (stupidityFactor > 1000)
+                    throw new Exception("Stupidity in CosmosDB loading. Description");
+
+                if (options.RequestContinuation == null) //https://codeopinion.com/paging-documentdb-query-results-from-net/
+                    options.RequestContinuation = result.ResponseContinuation;
+                stupidityFactor++;
+            };
+
             return new EventStream(aggregateCommits);
         }
 
