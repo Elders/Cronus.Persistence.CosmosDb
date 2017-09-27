@@ -31,7 +31,6 @@ namespace Elders.Cronus.Persistence.CosmosDb
 
         public IEnumerable<AggregateCommit> LoadAggregateCommits(int batchSize = 100)
         {
-            int stupidityFactor = 0;
             bool hasMoreRecords = true;
             var options = new FeedOptions { MaxItemCount = batchSize };
 
@@ -46,28 +45,15 @@ namespace Elders.Cronus.Persistence.CosmosDb
                     using (var dataStream = new MemoryStream(data))
                     {
                         AggregateCommit commit;
-                        try
-                        {
-                            commit = (AggregateCommit)serializer.Deserialize(dataStream);
-                        }
-                        catch (Exception ex)
-                        {
-                            string error = "Failed to deserialize an AggregateCommit. EventBase64bytes:" + Convert.ToBase64String(data);
-                            log.ErrorException(error, ex);
-                            continue;
-                        }
+                        commit = (AggregateCommit)serializer.Deserialize(dataStream);
                         yield return commit;
                     }
                 }
 
                 if (!query.HasMoreResults) hasMoreRecords = false;
 
-                if (stupidityFactor > 1000)
-                    throw new Exception("Stupidity in CosmosDB loading. Something is causing the process to cycle endlessly.");
-
                 if (options.RequestContinuation == null) //https://codeopinion.com/paging-documentdb-query-results-from-net/
                     options.RequestContinuation = result.ResponseContinuation;
-                stupidityFactor++;
             };
         }
     }
