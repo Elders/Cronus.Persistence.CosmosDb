@@ -6,25 +6,18 @@ using Elders.Cronus.IocContainer;
 using Elders.Cronus.Pipeline.Config;
 using Elders.Cronus.Pipeline.Hosts;
 using Elders.Cronus.Pipeline.Transport.RabbitMQ.Config;
-using Elders.Cronus.Sample.Collaboration.Contracts.Users.Commands;
 using Elders.Cronus.Sample.Collaboration.Contracts.Users.Events;
+using Elders.Cronus.Sample.Collaboration.Users;
 using Elders.Cronus.Sample.IdentityAndAccess.Accounts;
 using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Events;
-using Elders.Cronus.Sample.Collaboration.Users;
 using System;
 using System.Reflection;
-using Elders.Cronus.Pipeline.Transport;
-using Elders.Cronus.Serializer;
-using Elders.Cronus.Pipeline;
-using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Commands;
 
 namespace Elders.Cronus.Sample.ApplicationServices
 {
     class Program
     {
         static CronusHost host;
-        //static Container container;
-        //static IPublisher<ICommand> commandPublisher;
 
         static void Main(string[] args)
         {
@@ -33,11 +26,6 @@ namespace Elders.Cronus.Sample.ApplicationServices
             Console.ReadLine();
             host.Stop();
             host = null;
-            //var guid = Guid.Parse("b6598c7f-2d81-4c5f-8208-125d347f94bf");
-
-            //commandPublisher.Publish(new CreateUser(new Collaboration.Contracts.Users.UserId(guid), "CoolEmail@gmail.com"));
-            //commandPublisher.Publish(new RenameUser(new Collaboration.Contracts.Users.UserId(guid), "alexios", "plomaritis"));
-            //commandPublisher.Publish(new RenameUser(new Collaboration.Contracts.Users.UserId(guid), "barklexios", "Klomaritis"));
         }
 
         static void UseCronusHostWithCosmosEventStore()
@@ -74,23 +62,7 @@ namespace Elders.Cronus.Sample.ApplicationServices
             (cfg as ISettingsBuilder).Build();
             host = container.Resolve<CronusHost>();
             host.Start();
-
-            //ConfigureRabbitMQPublisher();
         }
-
-        //private static void ConfigureRabbitMQPublisher()
-        //{
-        //    var container = new Container();
-        //    Func<IPipelineTransport> transport = () => container.Resolve<IPipelineTransport>();
-        //    Func<ISerializer> serializer = () => container.Resolve<ISerializer>();
-        //    container.RegisterSingleton<IPublisher<ICommand>>(() => new PipelinePublisher<ICommand>(transport(), serializer()));
-
-        //    var cfg = new CronusSettings(container)
-        //        .UseContractsFromAssemblies(new Assembly[] { Assembly.GetAssembly(typeof(RegisterAccount)), Assembly.GetAssembly(typeof(CreateUser)) })
-        //        .UseRabbitMqTransport(x => x.Server = "docker-local.com");
-        //    (cfg as ISettingsBuilder).Build();
-        //    commandPublisher = container.Resolve<IPublisher<ICommand>>();
-        //}
 
         public class ApplicationServiceFactory
         {

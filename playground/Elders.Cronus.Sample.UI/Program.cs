@@ -13,6 +13,7 @@ using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Commands;
 using Elders.Cronus.Serializer;
 using System;
 using System.Reflection;
+using System.Threading;
 
 namespace Elders.Cronus.Sample.UI
 {
@@ -23,7 +24,13 @@ namespace Elders.Cronus.Sample.UI
         static void Main(string[] args)
         {
             ConfigureRabbitMQPublisher();
-            SingleCreateWithMultipleUpdateCommands(1);
+            HostUI(/////////////////////////////////////////////////////////////////
+                               publish: SingleCreationCommandFromUpstreamBC,
+                   delayBetweenBatches: 100,
+                             batchSize: 70,
+                numberOfMessagesToSend: Int32.MaxValue
+                ///////////////////////////////////////////////////////////////////
+                );
         }
 
         private static void ConfigureRabbitMQPublisher()
@@ -68,5 +75,51 @@ namespace Elders.Cronus.Sample.UI
             commandPublisher.Publish(new ChangeAccountEmail(accountId, email, String.Format("cronus_{0}_{0}_{0}_{0}_{0}_{0}_@Elders.com", index)));
         }
 
+        private static void HostUI(Action<int> publish, int delayBetweenBatches = 0, int batchSize = 1, int numberOfMessagesToSend = Int32.MaxValue)
+        {
+            Console.WriteLine("Start sending commands...");
+            if (batchSize == 1)
+            {
+                if (delayBetweenBatches == 0)
+                {
+                    for (int i = 0; i < numberOfMessagesToSend; i++)
+                    {
+                        publish(i);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < numberOfMessagesToSend; i++)
+                    {
+                        publish(i);
+                        Thread.Sleep(delayBetweenBatches);
+                    }
+                }
+            }
+            else
+            {
+                if (delayBetweenBatches == 0)
+                {
+                    for (int i = 0; i <= numberOfMessagesToSend - batchSize; i = i + batchSize)
+                    {
+                        for (int j = 0; j < batchSize; j++)
+                        {
+                            publish(i + j);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i <= numberOfMessagesToSend - batchSize; i = i + batchSize)
+                    {
+                        for (int j = 0; j < batchSize; j++)
+                        {
+                            publish(i + j);
+                        }
+                        Thread.Sleep(delayBetweenBatches);
+                    }
+                }
+            }
+        }
     }
 }

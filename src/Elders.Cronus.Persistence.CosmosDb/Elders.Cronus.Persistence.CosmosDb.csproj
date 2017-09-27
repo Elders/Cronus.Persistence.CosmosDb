@@ -65,6 +65,7 @@
     <Compile Include="Config\CosmosEventStoreSettings.cs" />
     <Compile Include="CosmosDbDocument.cs" />
     <Compile Include="CosmosEventStore.cs" />
+    <Compile Include="CosmosEventStorePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

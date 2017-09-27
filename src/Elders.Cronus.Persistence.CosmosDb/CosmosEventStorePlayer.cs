@@ -1,4 +1,5 @@
-﻿using Elders.Cronus.DomainModeling;
+﻿using Cronus.Persistence.CosmosDb;
+using Cronus.Persistence.CosmosDb.Logging;
 using Elders.Cronus.EventStore;
 using Elders.Cronus.Serializer;
 using Microsoft.Azure.Documents;
@@ -9,34 +10,34 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Cronus.Persistence.CosmosDb
+namespace Elders.Cronus.Persistence.CosmosDb
 {
-    public class CosmosEventStore : IEventStore
+    public class CosmosEventStorePlayer : IEventStorePlayer
     {
+        static readonly ILog log = LogProvider.GetLogger(typeof(CosmosEventStorePlayer));
+
         private readonly ISerializer serializer;
 
         private readonly DocumentClient client;
 
         private readonly Uri queryUri;
 
-        public CosmosEventStore(DocumentClient client, Uri queryUri, ISerializer serializer)
+        public CosmosEventStorePlayer(DocumentClient client, Uri queryUri, ISerializer serializer)
         {
             this.client = client;
             this.serializer = serializer;
             this.queryUri = queryUri;
         }
 
-        public EventStream Load(IAggregateRootId aggregateId)
+        public IEnumerable<AggregateCommit> LoadAggregateCommits(int batchSize = 100)
         {
-            List<AggregateCommit> aggregateCommits = new List<AggregateCommit>();
             int stupidityFactor = 0;
             bool hasMoreRecords = true;
-            string id = Convert.ToBase64String(aggregateId.RawId);
-            var options = new FeedOptions { MaxItemCount = 100 };
+            var options = new FeedOptions { MaxItemCount = batchSize };
 
             while (hasMoreRecords)
             {
-                IDocumentQuery<CosmosDbDocument> query = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, options).Where(x => x.I == id).AsDocumentQuery();
+                IDocumentQuery<CosmosDbDocument> query = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, options).OrderBy(x => x.I).AsDocumentQuery();
                 FeedResponse<Document> result = query.ExecuteNextAsync<Document>().Result;
 
                 foreach (var cosmosDocument in result)
@@ -44,7 +45,18 @@ namespace Cronus.Persistence.CosmosDb
                     byte[] data = ((CosmosDbDocument)((dynamic)cosmosDocument)).D;
                     using (var dataStream = new MemoryStream(data))
                     {
-                        aggregateCommits.Add((AggregateCommit)serializer.Deserialize(dataStream));
+                        AggregateCommit commit;
+                        try
+                        {
+                            commit = (AggregateCommit)serializer.Deserialize(dataStream);
+                        }
+                        catch (Exception ex)
+                        {
+                            string error = "Failed to deserialize an AggregateCommit. EventBase64bytes:" + Convert.ToBase64String(data);
+                            log.ErrorException(error, ex);
+                            continue;
+                        }
+                        yield return commit;
                     }
                 }
 
@@ -57,27 +69,6 @@ namespace Cronus.Persistence.CosmosDb
                     options.RequestContinuation = result.ResponseContinuation;
                 stupidityFactor++;
             };
-
-            return new EventStream(aggregateCommits);
-        }
-
-        public void Append(AggregateCommit aggregateCommit)
-        {
-            byte[] data = SerializeEvent(aggregateCommit);
-            string aggregateId = Convert.ToBase64String(aggregateCommit.AggregateRootId);
-            var document = new CosmosDbDocument(aggregateId, data);
-
-            ResourceResponse<Document> response = client.CreateDocumentAsync(queryUri, document).Result;
-        }
-
-        private byte[] SerializeEvent(AggregateCommit commit)
-        {
-            using (var stream = new MemoryStream())
-            {
-                serializer.Serialize(stream, commit);
-                return stream.ToArray();
-            }
         }
     }
 }
-
