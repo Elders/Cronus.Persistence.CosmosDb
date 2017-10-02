@@ -17,7 +17,7 @@ namespace Cronus.Persistence.CosmosDb.Config
             CosmosEventStoreSettings settings = new CosmosEventStoreSettings(self);
             settings.SetDatabaseName("Elders");
             settings.SetCollectionName("EventStore");
-            settings.SetThroughput(2500);
+            settings.SetThroughput(400);
             configure?.Invoke(settings);
 
             (settings as ISettingsBuilder).Build();
@@ -33,9 +33,16 @@ namespace Cronus.Persistence.CosmosDb.Config
             return self;
         }
 
+        /// <summary>
+        /// Set the Request Units per second 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="throughput"></param>
+        /// <returns></returns>
         public static T SetThroughput<T>(this T self, int throughput) where T : ICosmosEventStoreSettings
         {
-            if (throughput < 2500) throw new ArgumentException("Min is 2500!", nameof(throughput));
+            if (throughput < 400) throw new ArgumentException("Min is 400!", nameof(throughput));
 
             self.Throughput = throughput;
 
@@ -67,6 +74,20 @@ namespace Cronus.Persistence.CosmosDb.Config
 
             return self;
         }
+
+        /// <summary>
+        /// This sets the partition key to "/i". Requires the set ThroughPut to be >=2500
+        /// https://azure.microsoft.com/en-us/blog/10-things-to-know-about-documentdb-partitioned-collections/
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static T WithMultiplePartition<T>(this T self) where T : ICosmosEventStoreSettings
+        {
+            self.WithMultiplePartition = true;
+
+            return self;
+        }
     }
 
     public class CosmosEventStoreSettings : SettingsBuilder, ICosmosEventStoreSettings
@@ -82,7 +103,7 @@ namespace Cronus.Persistence.CosmosDb.Config
             if (settings.WithNewStorageIfNotExists)
             {
                 settings.DocumentClient.CreateDatabaseIfNotExistsAsync(new Database { Id = settings.DatabaseName }).Wait();
-                CreateAggregateCollection(settings.DocumentClient, settings.DatabaseName, settings.CollectionName, settings.Throughput);
+                CreateAggregateCollection(settings.DocumentClient, settings.DatabaseName, settings.CollectionName, settings.Throughput, settings.WithMultiplePartition);
             }
 
             var eventStore = new CosmosEventStore(settings.DocumentClient, queryUri, builder.Container.Resolve<ISerializer>());
@@ -90,10 +111,12 @@ namespace Cronus.Persistence.CosmosDb.Config
             builder.Container.RegisterSingleton<IEventStore>(() => eventStore, builder.Name);
         }
 
-        private static void CreateAggregateCollection(DocumentClient client, string databaseId, string collectionId, int throughput)
+        private static void CreateAggregateCollection(DocumentClient client, string databaseId, string collectionId, int throughput, bool withMultiplePartition)
         {
             var newCollection = new DocumentCollection { Id = collectionId };
-            newCollection.PartitionKey.Paths.Add("/i");
+            if (withMultiplePartition)
+                newCollection.PartitionKey.Paths.Add("/i");
+
             Uri databaseUri = UriFactory.CreateDatabaseUri(databaseId);
 
             client.CreateDocumentCollectionIfNotExistsAsync(databaseUri, newCollection, new RequestOptions { OfferThroughput = throughput }).Wait();
@@ -110,6 +133,8 @@ namespace Cronus.Persistence.CosmosDb.Config
         string IEventStoreSettings.BoundedContext { get; set; }
 
         DocumentClient ICosmosEventStoreSettings.DocumentClient { get; set; }
+
+        bool ICosmosEventStoreSettings.WithMultiplePartition { get; set; }
     }
 
     public interface ICosmosEventStoreSettings : IEventStoreSettings
@@ -118,6 +143,7 @@ namespace Cronus.Persistence.CosmosDb.Config
         string CollectionName { get; set; }
         int Throughput { get; set; }
         bool WithNewStorageIfNotExists { get; set; }
+        bool WithMultiplePartition { get; set; }
         DocumentClient DocumentClient { get; set; }
     }
 }
