@@ -118,6 +118,7 @@ namespace Cronus.Persistence.CosmosDb.Config
                 newCollection.PartitionKey.Paths.Add("/i");
 
             Uri databaseUri = UriFactory.CreateDatabaseUri(databaseId);
+            newCollection.IndexingPolicy = new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 });
 
             client.CreateDocumentCollectionIfNotExistsAsync(databaseUri, newCollection, new RequestOptions { OfferThroughput = throughput }).Wait();
         }

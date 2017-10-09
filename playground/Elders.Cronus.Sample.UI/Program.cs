@@ -1,5 +1,7 @@
 ﻿using Elders.Cronus.DomainModeling;
+using Elders.Cronus.EventStore;
 using Elders.Cronus.IocContainer;
+using Elders.Cronus.Persistence.CosmosDb;
 using Elders.Cronus.Pipeline;
 using Elders.Cronus.Pipeline.Config;
 using Elders.Cronus.Pipeline.Hosts;
@@ -11,6 +13,7 @@ using Elders.Cronus.Sample.IdentityAndAccess.Accounts.Commands;
 using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts;
 using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Commands;
 using Elders.Cronus.Serializer;
+using Microsoft.Azure.Documents.Client;
 using System;
 using System.Reflection;
 using System.Threading;
@@ -24,6 +27,7 @@ namespace Elders.Cronus.Sample.UI
         static void Main(string[] args)
         {
             ConfigureRabbitMQPublisher();
+
             HostUI(/////////////////////////////////////////////////////////////////
                                publish: SingleCreationCommandFromUpstreamBC,
                    delayBetweenBatches: 100,
@@ -73,6 +77,22 @@ namespace Elders.Cronus.Sample.UI
             commandPublisher.Publish(new ChangeAccountEmail(accountId, email, String.Format("cronus_{0}_{0}_{0}_{0}_@Elders.com", index)));
             commandPublisher.Publish(new ChangeAccountEmail(accountId, email, String.Format("cronus_{0}_{0}_{0}_{0}_{0}_@Elders.com", index)));
             commandPublisher.Publish(new ChangeAccountEmail(accountId, email, String.Format("cronus_{0}_{0}_{0}_{0}_{0}_{0}_@Elders.com", index)));
+        }
+
+        private static void TestCosmosDbPlayer()
+        {
+            var uri = new Uri("https://localhost:8081");
+            var documentClient = new DocumentClient(uri, "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+            var queryUri = UriFactory.CreateDocumentCollectionUri("Elders", "EventStore");
+            Assembly[] contracts = { typeof(UserId).Assembly, typeof(AggregateCommit).Assembly };
+            var serializer = new Serialization.NewtonsoftJson.JsonSerializer(contracts);
+
+            var cosmosPlayer = new CosmosEventStorePlayer(documentClient, queryUri, serializer);
+            var collection = cosmosPlayer.LoadAggregateCommits(100);
+            foreach (var item in collection)
+            {
+                Console.WriteLine("Collections should be working");
+            }
         }
 
         private static void HostUI(Action<int> publish, int delayBetweenBatches = 0, int batchSize = 1, int numberOfMessagesToSend = Int32.MaxValue)

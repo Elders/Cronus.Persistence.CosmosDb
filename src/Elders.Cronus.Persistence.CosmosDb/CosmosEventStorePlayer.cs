@@ -44,8 +44,7 @@ namespace Elders.Cronus.Persistence.CosmosDb
                     byte[] data = ((CosmosDbDocument)((dynamic)cosmosDocument)).D;
                     using (var dataStream = new MemoryStream(data))
                     {
-                        AggregateCommit commit;
-                        commit = (AggregateCommit)serializer.Deserialize(dataStream);
+                        AggregateCommit commit = (AggregateCommit)serializer.Deserialize(dataStream);
                         yield return commit;
                     }
                 }

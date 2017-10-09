@@ -43,7 +43,6 @@
     <Compile Include="Accounts\Account.cs" />
     <Compile Include="Accounts\AccountAppService.cs" />
     <Compile Include="Accounts\AccountState.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -53,6 +52,9 @@
       <Project>{EEF328A2-E601-41CA-9DDD-03ED88B398EA}</Project>
       <Name>Elders.Cronus.Sample.IdentityAndAccess.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
