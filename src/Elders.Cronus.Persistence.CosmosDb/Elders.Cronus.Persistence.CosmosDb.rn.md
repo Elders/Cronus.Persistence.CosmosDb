@@ -1,3 +1,7 @@
+#### 0.1.4 - 10.10.2017
+* Adds CosmosEventStoreStorageManager 
+* Fixes OrderBy for EventStore
+
 #### 0.1.3 - 10.10.2017
 * Tweaks Cosmos Player 
 * Adds setting the indexing policy
