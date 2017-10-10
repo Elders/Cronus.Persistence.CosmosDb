@@ -36,11 +36,11 @@ namespace Cronus.Persistence.CosmosDb
 
             while (hasMoreRecords)
             {
-                FeedResponse<Document> result = query.ExecuteNextAsync<Document>().Result;
+                FeedResponse<CosmosDbDocument> result = query.ExecuteNextAsync<CosmosDbDocument>().Result;
 
                 foreach (var cosmosDocument in result)
                 {
-                    byte[] data = ((CosmosDbDocument)((dynamic)cosmosDocument)).D;
+                    byte[] data = cosmosDocument.D;
                     using (var dataStream = new MemoryStream(data))
                     {
                         aggregateCommits.Add((AggregateCommit)serializer.Deserialize(dataStream));
@@ -50,7 +50,7 @@ namespace Cronus.Persistence.CosmosDb
                 if (!query.HasMoreResults) hasMoreRecords = false;
             };
 
-            return new EventStream(aggregateCommits);
+            return new EventStream(aggregateCommits.OrderBy(x => x.Revision).ToList());
         }
 
         public void Append(AggregateCommit aggregateCommit)

@@ -37,10 +37,10 @@ namespace Elders.Cronus.Persistence.CosmosDb
 
             while (hasMoreRecords)
             {
-                FeedResponse<Document> result = query.ExecuteNextAsync<Document>().Result;
+                FeedResponse<CosmosDbDocument> result = query.ExecuteNextAsync<CosmosDbDocument>().Result;
                 foreach (var cosmosDocument in result)
                 {
-                    byte[] data = ((CosmosDbDocument)((dynamic)cosmosDocument)).D;
+                    byte[] data = cosmosDocument.D;
                     using (var dataStream = new MemoryStream(data))
                     {
                         AggregateCommit commit = (AggregateCommit)serializer.Deserialize(dataStream);

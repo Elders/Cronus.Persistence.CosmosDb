@@ -117,8 +117,8 @@ namespace Cronus.Persistence.CosmosDb.Config
 
             if (settings.WithNewStorageIfNotExists)
             {
-                settings.DocumentClient.CreateDatabaseIfNotExistsAsync(new Database { Id = settings.DatabaseName }).Wait();
-                CreateAggregateCollection(settings.DocumentClient, settings.DatabaseName, settings.CollectionName, settings.Throughput, settings.WithMultiplePartition, settings.IndexingPolicy);
+                var manager = new Elders.Cronus.Persistence.CosmosDb.CosmosEventStoreStorageManager(settings.DocumentClient, settings.DatabaseName, settings.CollectionName, settings.Throughput, settings.WithMultiplePartition, settings.IndexingPolicy);
+                manager.CreateStorage();
             }
 
             var eventStore = new CosmosEventStore(settings.DocumentClient, queryUri, builder.Container.Resolve<ISerializer>());
