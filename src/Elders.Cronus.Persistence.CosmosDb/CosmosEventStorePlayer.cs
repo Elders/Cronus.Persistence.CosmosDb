@@ -33,12 +33,11 @@ namespace Elders.Cronus.Persistence.CosmosDb
         {
             bool hasMoreRecords = true;
             var options = new FeedOptions { MaxItemCount = batchSize };
+            IDocumentQuery<CosmosDbDocument> query = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, options).OrderBy(x => x.I).AsDocumentQuery();
 
             while (hasMoreRecords)
             {
-                IDocumentQuery<CosmosDbDocument> query = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, options).OrderBy(x => x.I).AsDocumentQuery();
                 FeedResponse<Document> result = query.ExecuteNextAsync<Document>().Result;
-
                 foreach (var cosmosDocument in result)
                 {
                     byte[] data = ((CosmosDbDocument)((dynamic)cosmosDocument)).D;
@@ -50,9 +49,6 @@ namespace Elders.Cronus.Persistence.CosmosDb
                 }
 
                 if (!query.HasMoreResults) hasMoreRecords = false;
-
-                if (options.RequestContinuation == null) //https://codeopinion.com/paging-documentdb-query-results-from-net/
-                    options.RequestContinuation = result.ResponseContinuation;
             };
         }
     }

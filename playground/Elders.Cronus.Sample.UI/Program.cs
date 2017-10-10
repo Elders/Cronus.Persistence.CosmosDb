@@ -15,6 +15,7 @@ using Elders.Cronus.Sample.IdentityAndAccess.Contracts.Accounts.Commands;
 using Elders.Cronus.Serializer;
 using Microsoft.Azure.Documents.Client;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 
@@ -26,15 +27,16 @@ namespace Elders.Cronus.Sample.UI
 
         static void Main(string[] args)
         {
-            ConfigureRabbitMQPublisher();
+            //ConfigureRabbitMQPublisher();
 
-            HostUI(/////////////////////////////////////////////////////////////////
-                               publish: SingleCreationCommandFromUpstreamBC,
-                   delayBetweenBatches: 100,
-                             batchSize: 70,
-                numberOfMessagesToSend: Int32.MaxValue
-                ///////////////////////////////////////////////////////////////////
-                );
+            //HostUI(/////////////////////////////////////////////////////////////////
+            //                   publish: SingleCreateWithMultipleUpdateCommands,
+            //       delayBetweenBatches: 100,
+            //                 batchSize: 100,
+            //    numberOfMessagesToSend: 1000
+            //    ///////////////////////////////////////////////////////////////////
+            //    );
+            TestCosmosDbPlayer();
         }
 
         private static void ConfigureRabbitMQPublisher()
@@ -84,15 +86,19 @@ namespace Elders.Cronus.Sample.UI
             var uri = new Uri("https://localhost:8081");
             var documentClient = new DocumentClient(uri, "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
             var queryUri = UriFactory.CreateDocumentCollectionUri("Elders", "EventStore");
-            Assembly[] contracts = { typeof(UserId).Assembly, typeof(AggregateCommit).Assembly };
+            Assembly[] contracts = { typeof(RegisterAccount).Assembly, typeof(AggregateCommit).Assembly };
             var serializer = new Serialization.NewtonsoftJson.JsonSerializer(contracts);
 
             var cosmosPlayer = new CosmosEventStorePlayer(documentClient, queryUri, serializer);
-            var collection = cosmosPlayer.LoadAggregateCommits(100);
-            foreach (var item in collection)
+            List<AggregateCommit> collection = new List<AggregateCommit>();
+
+            foreach (var item in cosmosPlayer.LoadAggregateCommits(100))
             {
+                collection.Add(item);
                 Console.WriteLine("Collections should be working");
             }
+
+            Console.ReadKey();
         }
 
         private static void HostUI(Action<int> publish, int delayBetweenBatches = 0, int batchSize = 1, int numberOfMessagesToSend = Int32.MaxValue)

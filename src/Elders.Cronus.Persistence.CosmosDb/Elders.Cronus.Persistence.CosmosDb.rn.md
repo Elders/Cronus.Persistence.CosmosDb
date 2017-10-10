@@ -1,3 +1,7 @@
+#### 0.1.3 - 10.10.2017
+* Tweaks Cosmos Player 
+* Adds setting the indexing policy
+
 #### 0.1.2 - 09.10.2017
 * Fixes cosmos player
 * Changes indexing policy

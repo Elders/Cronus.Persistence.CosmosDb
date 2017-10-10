@@ -18,6 +18,7 @@ namespace Cronus.Persistence.CosmosDb.Config
             settings.SetDatabaseName("Elders");
             settings.SetCollectionName("EventStore");
             settings.SetThroughput(400);
+            settings.SetIndexingPolicy(new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 }));
             configure?.Invoke(settings);
 
             (settings as ISettingsBuilder).Build();
@@ -29,6 +30,20 @@ namespace Cronus.Persistence.CosmosDb.Config
             if (string.IsNullOrWhiteSpace(databaseName)) throw new ArgumentNullException(nameof(databaseName));
 
             self.DatabaseName = databaseName;
+
+            return self;
+        }
+
+        /// <summary>
+        /// Default parameters allow the usage of OrderBy queries.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="indexingPolicy"></param>
+        /// <returns></returns>
+        public static T SetIndexingPolicy<T>(this T self, IndexingPolicy indexingPolicy) where T : ICosmosEventStoreSettings
+        {
+            self.IndexingPolicy = indexingPolicy ?? throw new ArgumentNullException(nameof(indexingPolicy));
 
             return self;
         }
@@ -103,7 +118,7 @@ namespace Cronus.Persistence.CosmosDb.Config
             if (settings.WithNewStorageIfNotExists)
             {
                 settings.DocumentClient.CreateDatabaseIfNotExistsAsync(new Database { Id = settings.DatabaseName }).Wait();
-                CreateAggregateCollection(settings.DocumentClient, settings.DatabaseName, settings.CollectionName, settings.Throughput, settings.WithMultiplePartition);
+                CreateAggregateCollection(settings.DocumentClient, settings.DatabaseName, settings.CollectionName, settings.Throughput, settings.WithMultiplePartition, settings.IndexingPolicy);
             }
 
             var eventStore = new CosmosEventStore(settings.DocumentClient, queryUri, builder.Container.Resolve<ISerializer>());
@@ -111,14 +126,15 @@ namespace Cronus.Persistence.CosmosDb.Config
             builder.Container.RegisterSingleton<IEventStore>(() => eventStore, builder.Name);
         }
 
-        private static void CreateAggregateCollection(DocumentClient client, string databaseId, string collectionId, int throughput, bool withMultiplePartition)
+        private static void CreateAggregateCollection(DocumentClient client, string databaseId, string collectionId, int throughput, bool withMultiplePartition, IndexingPolicy indexingPolicy)
         {
             var newCollection = new DocumentCollection { Id = collectionId };
             if (withMultiplePartition)
                 newCollection.PartitionKey.Paths.Add("/i");
 
             Uri databaseUri = UriFactory.CreateDatabaseUri(databaseId);
-            newCollection.IndexingPolicy = new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 });
+
+            newCollection.IndexingPolicy = indexingPolicy;
 
             client.CreateDocumentCollectionIfNotExistsAsync(databaseUri, newCollection, new RequestOptions { OfferThroughput = throughput }).Wait();
         }
@@ -136,6 +152,8 @@ namespace Cronus.Persistence.CosmosDb.Config
         DocumentClient ICosmosEventStoreSettings.DocumentClient { get; set; }
 
         bool ICosmosEventStoreSettings.WithMultiplePartition { get; set; }
+
+        IndexingPolicy ICosmosEventStoreSettings.IndexingPolicy { get; set; }
     }
 
     public interface ICosmosEventStoreSettings : IEventStoreSettings
@@ -146,5 +164,6 @@ namespace Cronus.Persistence.CosmosDb.Config
         bool WithNewStorageIfNotExists { get; set; }
         bool WithMultiplePartition { get; set; }
         DocumentClient DocumentClient { get; set; }
+        IndexingPolicy IndexingPolicy { get; set; }
     }
 }
