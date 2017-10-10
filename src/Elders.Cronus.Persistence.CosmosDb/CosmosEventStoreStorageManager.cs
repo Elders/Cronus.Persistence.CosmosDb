@@ -5,7 +5,7 @@ using System;
 
 namespace Elders.Cronus.Persistence.CosmosDb
 {
-    class CosmosEventStoreStorageManager : IEventStoreStorageManager
+    public class CosmosEventStoreStorageManager : IEventStoreStorageManager
     {
         private readonly DocumentClient client;
         private readonly string databaseName;

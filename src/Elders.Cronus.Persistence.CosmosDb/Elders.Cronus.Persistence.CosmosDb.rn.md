@@ -1,3 +1,6 @@
+#### 0.1.5 - 10.10.2017
+* Makes CosmosEventStoreStorageManager Usable
+
 #### 0.1.4 - 10.10.2017
 * Adds CosmosEventStoreStorageManager 
 * Fixes OrderBy for EventStore
