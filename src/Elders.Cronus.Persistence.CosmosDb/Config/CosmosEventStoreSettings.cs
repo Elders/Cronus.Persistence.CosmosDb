@@ -17,7 +17,7 @@ namespace Cronus.Persistence.CosmosDb.Config
             CosmosEventStoreSettings settings = new CosmosEventStoreSettings(self);
             settings.SetDatabaseName("Elders");
             settings.SetCollectionName("EventStore");
-            settings.SetThroughput(400);
+            settings.SetThroughput(5000);
             settings.SetIndexingPolicy(new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 }));
             configure?.Invoke(settings);
 
@@ -129,7 +129,7 @@ namespace Cronus.Persistence.CosmosDb.Config
         private static void CreateAggregateCollection(DocumentClient client, string databaseId, string collectionId, int throughput, bool withMultiplePartition, IndexingPolicy indexingPolicy)
         {
             var newCollection = new DocumentCollection { Id = collectionId };
-            if (withMultiplePartition)
+            if (withMultiplePartition && throughput >= 2500)
                 newCollection.PartitionKey.Paths.Add("/i");
 
             Uri databaseUri = UriFactory.CreateDatabaseUri(databaseId);

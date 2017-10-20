@@ -34,7 +34,6 @@ namespace Elders.Cronus.Persistence.CosmosDb
             bool hasMoreRecords = true;
             var options = new FeedOptions { MaxItemCount = batchSize };
             IDocumentQuery<CosmosDbDocument> query = client.CreateDocumentQuery<CosmosDbDocument>(queryUri, options).OrderBy(x => x.I).AsDocumentQuery();
-
             while (hasMoreRecords)
             {
                 FeedResponse<CosmosDbDocument> result = query.ExecuteNextAsync<CosmosDbDocument>().Result;

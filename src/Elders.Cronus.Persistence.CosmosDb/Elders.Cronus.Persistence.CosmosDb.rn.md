@@ -1,3 +1,6 @@
+#### 0.1.6 - 20.10.2017
+* Changes default throughput setting to 5000
+
 #### 0.1.5 - 10.10.2017
 * Makes CosmosEventStoreStorageManager Usable
 
