@@ -1,3 +1,6 @@
+#### 0.1.7 - 31.10.2017
+* Changes default throughput setting to 400
+
 #### 0.1.6 - 20.10.2017
 * Changes default throughput setting to 5000
 

@@ -17,7 +17,7 @@ namespace Cronus.Persistence.CosmosDb.Config
             CosmosEventStoreSettings settings = new CosmosEventStoreSettings(self);
             settings.SetDatabaseName("Elders");
             settings.SetCollectionName("EventStore");
-            settings.SetThroughput(5000);
+            settings.SetThroughput(400);
             settings.SetIndexingPolicy(new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 }));
             configure?.Invoke(settings);
 
@@ -49,7 +49,7 @@ namespace Cronus.Persistence.CosmosDb.Config
         }
 
         /// <summary>
-        /// Set the Request Units per second 
+        /// Set the Request Units per second. Defaults to 400
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
@@ -57,7 +57,7 @@ namespace Cronus.Persistence.CosmosDb.Config
         /// <returns></returns>
         public static T SetThroughput<T>(this T self, int throughput) where T : ICosmosEventStoreSettings
         {
-            if (throughput < 400) throw new ArgumentException("Min is 400!", nameof(throughput));
+            if (throughput < 400 || throughput > 10000) throw new ArgumentException("Min is 400! Max is 10000!", nameof(throughput));
 
             self.Throughput = throughput;
 
