@@ -15,8 +15,6 @@ namespace Cronus.Persistence.CosmosDb.Config
         public static T UseCosmosEventStore<T>(this T self, Action<CosmosEventStoreSettings> configure) where T : IConsumerSettings<ICommand>
         {
             CosmosEventStoreSettings settings = new CosmosEventStoreSettings(self);
-            settings.SetDatabaseName("Elders");
-            settings.SetCollectionName("EventStore");
             settings.SetThroughput(400);
             settings.SetIndexingPolicy(new IndexingPolicy(new RangeIndex(DataType.String) { Precision = -1 }));
             configure?.Invoke(settings);
@@ -113,6 +111,8 @@ namespace Cronus.Persistence.CosmosDb.Config
         {
             var builder = this as ISettingsBuilder;
             ICosmosEventStoreSettings settings = this as ICosmosEventStoreSettings;
+            if (string.IsNullOrEmpty(settings.DatabaseName)) throw new ArgumentException("CosmosDB database name is not specified");
+            if (string.IsNullOrEmpty(settings.CollectionName)) throw new ArgumentException("CosmosDB collection name is not specified");
             Uri queryUri = UriFactory.CreateDocumentCollectionUri(settings.DatabaseName, settings.CollectionName);
 
             if (settings.WithNewStorageIfNotExists)

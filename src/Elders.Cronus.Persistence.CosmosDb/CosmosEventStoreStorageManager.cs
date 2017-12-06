@@ -27,7 +27,7 @@ namespace Elders.Cronus.Persistence.CosmosDb
         public void CreateEventsStorage()
         {
             var newCollection = new DocumentCollection { Id = collectionId };
-            if (withMultiplePartition)
+            if (withMultiplePartition && throughput >= 2500)
                 newCollection.PartitionKey.Paths.Add("/i");
 
             Uri databaseUri = UriFactory.CreateDatabaseUri(databaseName);

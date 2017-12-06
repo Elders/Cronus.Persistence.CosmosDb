@@ -1,3 +1,7 @@
+#### 0.1.8 - 06.12.2017
+* Throughput needs to be above 2500 to have multiple partitioning
+* Makes providing Database and Collection name mandatory
+
 #### 0.1.7 - 31.10.2017
 * Changes default throughput setting to 400
 
